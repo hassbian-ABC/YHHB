@@ -27,7 +27,7 @@ LOG_FILE_PATH="${basepath}/logs/"
 #LOG_FILE_PATH=""
 
 
-# 插件目录 不移动插件指明插件所在路径 移动插件设备空
+# 插件目录 不移动插件指明插件所在路径 移动插件设为空
 PLUGIN_FILE_PATH=""
 #PLUGIN_FILE_PATH="/usr/local/lib/node_modules/"
 

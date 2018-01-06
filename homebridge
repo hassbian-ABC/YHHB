@@ -1,0 +1,25 @@
+#!/usr/bin/env node
+
+'use strict';
+
+var titalStr="homebridge";
+for(var i=2; i<process.argv.length; i++) {
+    titalStr+=" " + process.argv[i];
+}
+process.title = titalStr;
+
+const fs = require('fs');
+const path = require('path');
+
+const pathEnvArr = process.env['PATH'].split(':');
+var hb;
+for(var index in pathEnvArr) {
+    if(fs.existsSync(pathEnvArr[index] + "/homebridge")) {
+        hb=pathEnvArr[index] + "/homebridge";
+        break;
+    }
+}
+var hb=fs.realpathSync(hb);
+var hbLib=path.join(path.dirname(fs.realpathSync(hb)), '../lib');
+
+require(hbLib + '/cli')();

@@ -123,3 +123,9 @@ pi@raspberrypi:~/hb_dev$ bash YHHB status
 pi@raspberrypi:~/hb_dev$ 
 ```
 
+## 开机自启动
+
+
+## 版本更新记录
+### 0.1.0 (2018年1月6日)
+1.提供HomeBridge多开功能，支持是否移动插件，是否记录日志等配置。   

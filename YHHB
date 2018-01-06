@@ -124,7 +124,7 @@ start() {
             fi
             cmd="$cmd"" 2>&1 &";
             
-            echo "$cmd"
+            # echo "$cmd"
             eval "$cmd"
         done
     fi

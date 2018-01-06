@@ -85,23 +85,23 @@ hbPaths每个HomeBridge的配置目录，注意：最终的config.json是在每�
 ```
 
 ## 参数说明
-# 启动HomeBridge
+### 启动HomeBridge
 ```
 bash YHHB start
 ```
-# 关闭HomeBridge
+### 关闭HomeBridge
 ```
 bash YHHB stop
 ```
-# 重启HomeBridge
+### 重启HomeBridge
 ```
 bash YHHB restart
 ```
-# 查看当前脚本版本
+### 查看当前脚本版本
 ```
 bash YHHB version
 ```
-# 查看当前运行状态
+### 查看当前运行状态
 ```
 bash YHHB status
 ```

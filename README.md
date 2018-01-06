@@ -63,23 +63,63 @@ hbPaths每个HomeBridge的配置目录，注意：最终的config.json是在每�
 推荐目录结构如下：
 ```
 ./YHHB/
-  hbs/
-    HomeBridge1/
-      config/
-        config.json
-      plugin/
-        插件1目录/
-        插件2目录/
-    HomeBridge2/
-      config/
-        config.json
-      plugin/
-        插件3目录/
-    HomeBridge3/
-      config/
-        config.json
-      plugin/
-        插件4目录/
-  YHHB
-  homebridge
+./YHHB/hbs/
+./YHHB/hbs/HomeBridge1/
+./YHHB/hbs/HomeBridge1/config/
+./YHHB/hbs/HomeBridge1/config/config.json
+./YHHB/hbs/HomeBridge1/plugin/
+./YHHB/hbs/HomeBridge1/plugin/插件1/
+./YHHB/hbs/HomeBridge1/plugin/插件2/
+./YHHB/hbs/HomeBridge2/
+./YHHB/hbs/HomeBridge2/config/
+./YHHB/hbs/HomeBridge2/config/config.json
+./YHHB/hbs/HomeBridge2/plugin/
+./YHHB/hbs/HomeBridge2/plugin/插件3/
+./YHHB/hbs/HomeBridge3/
+./YHHB/hbs/HomeBridge3/config/
+./YHHB/hbs/HomeBridge3/config/config.json
+./YHHB/hbs/HomeBridge3/plugin/
+./YHHB/hbs/HomeBridge3/plugin/插件4/
+./YHHB/YHHB
+./YHHB/homebridge
 ```
+
+## 参数说明
+# 启动HomeBridge
+```
+bash YHHB start
+```
+# 关闭HomeBridge
+```
+bash YHHB stop
+```
+# 重启HomeBridge
+```
+bash YHHB restart
+```
+# 查看当前脚本版本
+```
+bash YHHB version
+```
+# 查看当前运行状态
+```
+bash YHHB status
+```
+示例如下：    
+```
+pi@raspberrypi:~/hb_dev$ 
+pi@raspberrypi:~/hb_dev$ bash YHHB status
+[Running] 13299 /home/pi/YHHB/BroadlinkRM/
+[Running] 13300 /home/pi/YHHB/YeeLight/
+[Running] 13301 /home/pi/YHHB/MiAqaraPlatform/
+[Running] 13302 /home/pi/YHHB/RaspberryPi/
+[Running] 13303 /home/pi/YHHB/Others/
+[Running] 13304 /home/pi/YHHB/MiOutletPlatform/
+[Running] 13305 /home/pi/YHHB/MiRobotVacuumPlatform/
+[Running] 13306 /home/pi/YHHB/IkonkeOutletPlatform/
+[Running] 13310 /home/pi/YHHB/IkonkeLightPlatform/
+[Running] 13313 /home/pi/YHHB/MiPhilipsLightPlatform/
+[Running] 13319 /home/pi/YHHB/MiFanPlatform/
+pi@raspberrypi:~/hb_dev$ 
+```
+

@@ -36,10 +36,10 @@ PLUGIN_FILE_PATH=""
 # 目录结构例：
 # '/home/pi/YHHB/hbs/MiAqaraPlatform/' 配置在该位置的路径
 #   '/home/pi/YHHB/hbs/MiAqaraPlatform/config' HomeBridge配置文件路径
-#   '/home/pi/YHHB/hbs/MiAqaraPlatform/config' HomeBridge插件文件路径 PLUGIN_FILE_PATH为空时有效
+#   '/home/pi/YHHB/hbs/MiAqaraPlatform/plugin' HomeBridge插件文件路径 PLUGIN_FILE_PATH为空时有效
 # '/home/pi/YHHB/hbs/MiPhilipsLightPlatform/' 配置在该位置的路径
 #   '/home/pi/YHHB/hbs/MiPhilipsLightPlatform/config' HomeBridge配置文件路径
-#   '/home/pi/YHHB/hbs/MiPhilipsLightPlatform/config' HomeBridge插件文件路径 PLUGIN_FILE_PATH为空时有效
+#   '/home/pi/YHHB/hbs/MiPhilipsLightPlatform/plugin' HomeBridge插件文件路径 PLUGIN_FILE_PATH为空时有效
 hbPaths=(
 '/home/pi/YHHB/hbs/BroadlinkRM/'
 '/home/pi/YHHB/hbs/YeeLight/'

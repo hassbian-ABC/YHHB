@@ -13,11 +13,6 @@ basepath=$(cd `dirname $0`; pwd);
 
 # config ###########################################
 
-# 指定启动用户 空为不指定
-#STARTUP_USER="pi"
-STARTUP_USER=""
-
-
 # 日志文件打印路径
 # "${basepath}/logs/" 为脚本所在目录下logs文件
 # "/home/pi/YHHB_logs/" 为记录日志到/home/pi/YHHB_logs/目录下
@@ -57,8 +52,10 @@ hbPaths=(
 ####################################################
 
 if [ -n "$LOG_FILE_PATH" ]; then
-    mkdir "$LOG_FILE_PATH"
-    echo "[WARN] mkdir $LOG_FILE_PATH"
+    if [ ! -x "$LOG_FILE_PATH" ]; then
+        mkdir "$LOG_FILE_PATH"
+        echo "[WARN] mkdir $LOG_FILE_PATH"
+    fi
 fi
 
 getRunningNum() {
@@ -105,12 +102,7 @@ start() {
         echo "[WARN] YHHB is runing.";
     else
         for hbPath in ${hbPaths[@]}; do
-            cmd="";
-            if [ -n "$STARTUP_USER" ]; then
-                cmd="$cmd""sudo -i -u $STARTUP_USER ";
-            fi
-            cmd="$cmd""nohup ";
-            cmd="$cmd""./homebridge -U $hbPath/config/ ";
+            cmd="nohup ${basepath}/homebridge -U $hbPath/config/ ";
             if [ -n "$PLUGIN_FILE_PATH" ]; then
                 cmd="$cmd""-P $PLUGIN_FILE_PATH";
             else
@@ -119,6 +111,7 @@ start() {
             cmd="$cmd"" >> ";
             if [ -n "$LOG_FILE_PATH" ]; then
                 cmd="$cmd""$LOG_FILE_PATH/$(basename $hbPath).log";
+                echo "============ YHHB Start "`date '+%Y-%m-%d %H:%M:%S'`" =============" >> "$LOG_FILE_PATH/$(basename $hbPath).log"
             else
                 cmd="$cmd""/dev/null";
             fi

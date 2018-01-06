@@ -16,7 +16,7 @@ chmod +x ./YHHB ./homebridge
 ```
 
 ## 配置说明    
-编辑YHHB文件，如下部分：
+编辑YHHB文件，找到并且根据自己的情况修改如下部分：
 ```
 # config ###########################################
 
@@ -58,9 +58,9 @@ hbPaths=(
 
 ####################################################
 ```
-LOG_FILE_PATH为保留日志文件路径。可以使用绝对路径，也可以使用相对路径，如："${basepath}/logs/"为脚本目录下logs文件，空为不保存日志。    
-PLUGIN_FILE_PATH插件位置，设为空时在每个子目录里plugin找插件，设为某个目录是，均到该目录内找插件。    
-hbPaths每个HomeBridge的配置目录，注意：最终的config.json是在每一个配置目录下config内查找。    
+**LOG_FILE_PATH**为保留日志文件路径。可以使用绝对路径，也可以使用相对路径，如："${basepath}/logs/"为脚本目录下logs文件，空为不保存日志。    
+**PLUGIN_FILE_PATH**插件位置，设为空时在每个子目录里plugin找插件，设为某个目录是，均到该目录内找插件。    
+**hbPaths**每个HomeBridge的配置目录，注意：最终的config.json是在每一个配置目录下config内查找。    
 推荐目录结构如下：
 ```
 ./YHHB/
@@ -134,7 +134,7 @@ bash /home/pi/YHHB/YHHB start
 ```
 sudo -i -u pi bash /home/pi/YHHB/YHHB start
 ```
-注：sudo -i -u pi为使用pi用户执行脚本，根据自己装的插件是否需要某用户环境决定是否需要加。不加的话是已root用户启动。
+注：sudo -i -u pi为使用pi用户执行脚本，根据自己装的插件是否需要某用户环境决定是否需要加。不加的话是已root用户启动。    
 /etc/rc.local文件示例如下：
 ```
 #!/bin/sh -e

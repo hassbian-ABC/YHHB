@@ -21,6 +21,12 @@ chmod +x ./YHHB ./homebridge
 ```
 # config ###########################################
 
+# 启动参数 可以附加HomeBridge的启动参数
+STARTUP_PARAM=""
+#STARTUP_PARAM="-D"
+#STARTUP_PARAM="-I"
+#STARTUP_PARAM="-D -I"
+
 # 日志文件打印路径
 # "${basepath}/logs/" 为脚本所在目录下logs文件
 # "/home/pi/YHHB_logs/" 为记录日志到/home/pi/YHHB_logs/目录下
@@ -59,6 +65,7 @@ hbPaths=(
 
 ####################################################
 ```
+**STARTUP_PARAM**可以为启动HomeBridge附加启动参数。    
 **LOG_FILE_PATH**为保留日志文件路径。可以使用绝对路径，也可以使用相对路径，如："${basepath}/logs/"为脚本目录下logs文件，空为不保存日志。    
 **PLUGIN_FILE_PATH**插件位置，设为空时在每个子目录里plugin找插件，设为某个目录是，均到该目录内找插件。    
 **hbPaths**每个HomeBridge的配置目录，注意：最终的config.json是在每一个配置目录下config内查找。    
@@ -111,17 +118,17 @@ bash YHHB status
 ```
 pi@raspberrypi:~/hb_dev$ 
 pi@raspberrypi:~/hb_dev$ bash YHHB status
-[Running] 13299 /home/pi/YHHB/BroadlinkRM/
-[Running] 13300 /home/pi/YHHB/YeeLight/
-[Running] 13301 /home/pi/YHHB/MiAqaraPlatform/
-[Running] 13302 /home/pi/YHHB/RaspberryPi/
-[Running] 13303 /home/pi/YHHB/Others/
-[Running] 13304 /home/pi/YHHB/MiOutletPlatform/
-[Running] 13305 /home/pi/YHHB/MiRobotVacuumPlatform/
-[Running] 13306 /home/pi/YHHB/IkonkeOutletPlatform/
-[Running] 13310 /home/pi/YHHB/IkonkeLightPlatform/
-[Running] 13313 /home/pi/YHHB/MiPhilipsLightPlatform/
-[Running] 13319 /home/pi/YHHB/MiFanPlatform/
+(Running) 3960  [000-01-001] HomeBridge_BroadlinkRM     /home/pi/YHHB/hbs/BroadlinkRM/
+(Running) 3965  [000-01-002] HomeBridge_YeeLight        /home/pi/YHHB/hbs/YeeLight/
+(Running) 3975  [000-01-003] HomeBridge_MiAqaraPlatform /home/pi/YHHB/hbs/MiAqaraPlatform/
+(Running) 3982  [000-02-001] HomeBridge_RaspberryPi     /home/pi/YHHB/hbs/RaspberryPi/
+(Running) 3991  [000-02-002] HomeBridge_Others  /home/pi/YHHB/hbs/Others/
+(Running) 4005  [000-01-004] HomeBridge_MiOutletPlatform        /home/pi/YHHB/hbs/MiOutletPlatform/
+(Running) 4014  [000-01-005] HomeBridge_MiRobotVacuumPlatform   /home/pi/YHHB/hbs/MiRobotVacuumPlatform/
+(Running) 4023  [000-01-006] HomeBridge_IkonkeOutletPlatform    /home/pi/YHHB/hbs/IkonkeOutletPlatform/
+(Running) 4032  [000-01-007] HomeBridge_IkonkeLightPlatform     /home/pi/YHHB/hbs/IkonkeLightPlatform/
+(Running) 4041  [000-01-008] HomeBridge_MiPhilipsLightPlatform  /home/pi/YHHB/hbs/MiPhilipsLightPlatform/
+(Running) 4050  [000-01-009] HomeBridge_MiFanPlatform   /home/pi/YHHB/hbs/MiFanPlatform/
 pi@raspberrypi:~/hb_dev$ 
 ```
 
@@ -166,5 +173,8 @@ sudo -i -u pi bash /home/pi/YHHB/YHHB start
 exit 0
 ```
 ## 版本更新记录
-### 0.1.0 (2018年1月6日)
+### 0.1.0 (2018-01-07)
+1.查看状态中增加每个配置的pin码和name显示，方便统一查看。
+2.增加附加参数启动功能，方便通过-D -I启动HomeBridge。
+### 0.1.0 (2018-01-06)
 1.提供HomeBridge多开功能，支持是否移动插件，是否记录日志等配置。   

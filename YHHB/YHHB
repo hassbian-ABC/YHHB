@@ -2,16 +2,22 @@
 # /etc/init.d/YHHB
 
 # ******************************************
-#               YHHB v0.1.0
+#               YHHB v0.1.1
 #                       By YinHang
 #      https://github.com/YinHangCode/YHHB
 #                      QQ Group: 107927710
 # ******************************************
 
-version="0.1.0"
+version="0.1.1"
 basepath=$(cd `dirname $0`; pwd);
 
 # config ###########################################
+
+# 启动参数 可以附加HomeBridge的启动参数
+STARTUP_PARAM=""
+#STARTUP_PARAM="-D"
+#STARTUP_PARAM="-I"
+#STARTUP_PARAM="-D -I"
 
 # 日志文件打印路径
 # "${basepath}/logs/" 为脚本所在目录下logs文件
@@ -69,16 +75,37 @@ getRunningNum() {
     return $runningNum;
 }
 
+getConfigBridgeValue() {
+    bridgeStr=`awk BEGIN{RS=EOF}'{gsub(/\n/," ");print}' $1 | awk '{gsub(/ /,"")}1' | awk -F "\"bridge\":{" '{print $2}' | awk -F "}," '{print $1}'`;
+    if [ -n "$bridgeStr" ]; then
+        mNum=`echo $bridgeStr | awk -v RS=':' 'END {print --NR}'`;
+        yNum=`echo $bridgeStr | awk -v RS='\"' 'END {print --NR}'`;
+        if [ "$mNum" -eq "9" ] && [ "$yNum" -eq "14" ]; then
+            valueStr=`echo $bridgeStr | awk -F "\"$2\":\"" '{print $2}' | awk -F "\"" '{print $1}'`;
+            echo $valueStr;
+        else
+            echo $3;
+        fi
+    else
+        echo $3;
+    fi
+}
+
 status() {
     for hbPath in ${hbPaths[@]}; do
         pid=`ps -ef | grep homebridge | grep $hbPath | grep -v grep | awk '{print $2}'`
         if [ -z "$pid" ]; then
-            echo -n "[Not Run]"
+            echo -n "(Not Run)"
         else
-            echo -n "[Running]"
+            echo -n "(Running)"
+            echo -n " "
+            echo -n $pid
+            echo -n -e "\t"
+            echo -n "["$(getConfigBridgeValue "$hbPath/config/config.json" "pin" "----------")"]"
+            echo -n " "
+            echo -n $(getConfigBridgeValue "$hbPath/config/config.json" "name" "")
         fi
-        echo -n " "
-        echo -n $pid
+
         echo -n -e "\t"
         echo -n $hbPath
         echo ""
@@ -102,7 +129,7 @@ start() {
         echo "[WARN] YHHB is runing.";
     else
         for hbPath in ${hbPaths[@]}; do
-            cmd="nohup ${basepath}/homebridge -U $hbPath/config/ ";
+            cmd="nohup ${basepath}/homebridge $STARTUP_PARAM -U $hbPath/config/ ";
             if [ -n "$PLUGIN_FILE_PATH" ]; then
                 cmd="$cmd""-P $PLUGIN_FILE_PATH";
             else

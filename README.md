@@ -178,6 +178,8 @@ bash YHHB config 1,3
 ```
 示例如下：
 ```
+pi@raspberrypi:~/hb_dev$ 
+pi@raspberrypi:~/hb_dev$ bash YHHB config
   [1] HomeBridge_BroadlinkRM                   [000-01-001]    34:EA:34:C7:3F:C8    58001    /home/pi/YHHB/hbs/BroadlinkRM//config/config.json
   [2] HomeBridge_YeeLight                      [000-01-002]    F8:24:41:E3:BE:FF    58002    /home/pi/YHHB/hbs/YeeLight//config/config.json
   [3] HomeBridge_MiAqaraPlatform               [000-01-003]    34:CE:00:88:C5:17    58003    /home/pi/YHHB/hbs/MiAqaraPlatform//config/config.json
@@ -189,6 +191,7 @@ bash YHHB config 1,3
   [9] HomeBridge_IkonkeLightPlatform           [000-01-007]    18:FE:34:D1:5A:B4    58009    /home/pi/YHHB/hbs/IkonkeLightPlatform//config/config.json
  [10] HomeBridge_MiPhilipsLightPlatform        [000-01-008]    F0:B4:29:C4:C6:D4    58010    /home/pi/YHHB/hbs/MiPhilipsLightPlatform//config/config.json
  [11] HomeBridge_MiFanPlatform                 [000-01-009]    34:CE:00:F8:C5:20    58011    /home/pi/YHHB/hbs/MiFanPlatform//config/config.json
+pi@raspberrypi:~/hb_dev$ 
 ```
 ### 查看版本
 ```

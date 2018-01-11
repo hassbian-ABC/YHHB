@@ -95,41 +95,104 @@ hbPaths=(
 
 ## 参数说明
 ### 启动
+启动全部homebridge，命令如下：
 ```
 bash YHHB start
 ```
+如果想单独启动某个homebridge，可指定具体要启动的homebridge编号，命令如下：
+```
+bash YHHB start 2
+```
+如果想单独启动某些homebridge，可通过逗号作为分割指定具体要启动的homebridge编号，命令如下：
+```
+bash YHHB start 1,2,3,4
+```
 ### 关闭
+关闭全部homebridge，命令如下：
 ```
 bash YHHB stop
 ```
+如果想单独关闭某个homebridge，可指定具体要关闭的homebridge编号，命令如下：
+```
+bash YHHB stop 2
+```
+如果想单独关闭某些homebridge，可通过逗号作为分割指定具体要关闭的homebridge编号，命令如下：
+```
+bash YHHB stop 1,3
+```
 ### 重启
+重启全部homebridge，命令如下：
 ```
 bash YHHB restart
 ```
-### 查看版本
+如果想单独重启某个homebridge，可指定具体要重启的homebridge编号，命令如下：
 ```
-bash YHHB version
+bash YHHB restart 3
+```
+如果想单独重启某些homebridge，可通过逗号作为分割指定具体要重启的homebridge编号，命令如下：
+```
+bash YHHB restart 1,3
 ```
 ### 查看运行状态
+查看全部homebridge运行状态，命令如下：
 ```
 bash YHHB status
+```
+如果想单独查看某个homebridge运行状态，可指定具体要查看的homebridge编号，命令如下：
+```
+bash YHHB status 3
+```
+如果想单独查看某些homebridge运行状态，可通过逗号作为分割指定具体要查看运行状态的homebridge编号，命令如下：
+```
+bash YHHB status 1,3
 ```
 示例如下：    
 ```
 pi@raspberrypi:~/hb_dev$ 
 pi@raspberrypi:~/hb_dev$ bash YHHB status
-(Running) 3960  [000-01-001] HomeBridge_BroadlinkRM     /home/pi/YHHB/hbs/BroadlinkRM/
-(Running) 3965  [000-01-002] HomeBridge_YeeLight        /home/pi/YHHB/hbs/YeeLight/
-(Running) 3975  [000-01-003] HomeBridge_MiAqaraPlatform /home/pi/YHHB/hbs/MiAqaraPlatform/
-(Running) 3982  [000-02-001] HomeBridge_RaspberryPi     /home/pi/YHHB/hbs/RaspberryPi/
-(Running) 3991  [000-02-002] HomeBridge_Others  /home/pi/YHHB/hbs/Others/
-(Running) 4005  [000-01-004] HomeBridge_MiOutletPlatform        /home/pi/YHHB/hbs/MiOutletPlatform/
-(Running) 4014  [000-01-005] HomeBridge_MiRobotVacuumPlatform   /home/pi/YHHB/hbs/MiRobotVacuumPlatform/
-(Running) 4023  [000-01-006] HomeBridge_IkonkeOutletPlatform    /home/pi/YHHB/hbs/IkonkeOutletPlatform/
-(Running) 4032  [000-01-007] HomeBridge_IkonkeLightPlatform     /home/pi/YHHB/hbs/IkonkeLightPlatform/
-(Running) 4041  [000-01-008] HomeBridge_MiPhilipsLightPlatform  /home/pi/YHHB/hbs/MiPhilipsLightPlatform/
-(Running) 4050  [000-01-009] HomeBridge_MiFanPlatform   /home/pi/YHHB/hbs/MiFanPlatform/
+  [1] [Running]     23125      0-00:01:49   /home/pi/YHHB/hbs/BroadlinkRM/
+  [2] [Running]     23139      0-00:01:50   /home/pi/YHHB/hbs/YeeLight/
+  [3] [Running]     23856      0-00:00:02   /home/pi/YHHB/hbs/MiAqaraPlatform/
+  [4] [Running]     23167      0-00:01:50   /home/pi/YHHB/hbs/RaspberryPi/
+  [5] [Running]     23870      0-00:00:02   /home/pi/YHHB/hbs/Others/
+  [6] [Running]     23195      0-00:01:50   /home/pi/YHHB/hbs/MiOutletPlatform/
+  [7] [Running]     23209      0-00:01:50   /home/pi/YHHB/hbs/MiRobotVacuumPlatform/
+  [8] [Running]     23223      0-00:01:49   /home/pi/YHHB/hbs/IkonkeOutletPlatform/
+  [9] [Running]     23237      0-00:01:49   /home/pi/YHHB/hbs/IkonkeLightPlatform/
+ [10] [Running]     23251      0-00:01:49   /home/pi/YHHB/hbs/MiPhilipsLightPlatform/
+ [11] [Running]     23265      0-00:01:50   /home/pi/YHHB/hbs/MiFanPlatform/
 pi@raspberrypi:~/hb_dev$ 
+```
+### 查看配置信息
+查看全部homebridge配置信息，命令如下：
+```
+bash YHHB config
+```
+如果想单独查看某个homebridge配置信息，可指定具体要查看的homebridge编号，命令如下：
+```
+bash YHHB config 3
+```
+如果想单独查看某些homebridge配置信息，可通过逗号作为分割指定具体要查看配置信息的homebridge编号，命令如下：
+```
+bash YHHB config 1,3
+```
+示例如下：
+```
+  [1] HomeBridge_BroadlinkRM                   [000-01-001]    34:EA:34:C7:3F:C8    58001    /home/pi/YHHB/hbs/BroadlinkRM//config/config.json
+  [2] HomeBridge_YeeLight                      [000-01-002]    F8:24:41:E3:BE:FF    58002    /home/pi/YHHB/hbs/YeeLight//config/config.json
+  [3] HomeBridge_MiAqaraPlatform               [000-01-003]    34:CE:00:88:C5:17    58003    /home/pi/YHHB/hbs/MiAqaraPlatform//config/config.json
+  [4] HomeBridge_RaspberryPi                   [000-02-001]    B8:27:EB:EE:AF:1B    58004    /home/pi/YHHB/hbs/RaspberryPi//config/config.json
+  [5] HomeBridge_Others                        [000-02-002]    8E:BE:BE:44:91:34    58005    /home/pi/YHHB/hbs/Others//config/config.json
+  [6] HomeBridge_MiOutletPlatform              [000-01-004]    34:CE:00:FC:4D:F5    58006    /home/pi/YHHB/hbs/MiOutletPlatform//config/config.json
+  [7] HomeBridge_MiRobotVacuumPlatform         [000-01-005]    28:6C:07:23:6E:11    58007    /home/pi/YHHB/hbs/MiRobotVacuumPlatform//config/config.json
+  [8] HomeBridge_IkonkeOutletPlatform          [000-01-006]    28:D9:8A:08:35:6D    58008    /home/pi/YHHB/hbs/IkonkeOutletPlatform//config/config.json
+  [9] HomeBridge_IkonkeLightPlatform           [000-01-007]    18:FE:34:D1:5A:B4    58009    /home/pi/YHHB/hbs/IkonkeLightPlatform//config/config.json
+ [10] HomeBridge_MiPhilipsLightPlatform        [000-01-008]    F0:B4:29:C4:C6:D4    58010    /home/pi/YHHB/hbs/MiPhilipsLightPlatform//config/config.json
+ [11] HomeBridge_MiFanPlatform                 [000-01-009]    34:CE:00:F8:C5:20    58011    /home/pi/YHHB/hbs/MiFanPlatform//config/config.json
+```
+### 查看版本
+```
+bash YHHB version
 ```
 
 ## 开机自启动
@@ -173,6 +236,11 @@ sudo -i -u pi bash /home/pi/YHHB/YHHB start
 exit 0
 ```
 ## 版本更新记录
+### 0.1.2 (2018-01-11)
+1.运行状态和配置信息拆分为两个查看命令。    
+2.配置信息增加显示内容，目前显示序号，名称，端口号，mac地址，ping码，配置文件路径。    
+3.运行状态增加已运行时间和序号的显示。    
+4.启动，关闭，重启，查看运行状态，查看配置信息全部增加针对某个HomeBridge单独执行的支持。     
 ### 0.1.1 (2018-01-07)
 1.查看状态中增加每个配置的pin码和name显示，方便统一查看。    
 2.增加附加参数启动功能，方便通过附加-D -I等参数启动HomeBridge。    

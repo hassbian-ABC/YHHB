@@ -2,13 +2,13 @@
 # /etc/init.d/YHHB
 
 # ******************************************
-#               YHHB v0.1.1
+#               YHHB v0.1.2
 #                       By YinHang
 #      https://github.com/YinHangCode/YHHB
 #                      QQ Group: 107927710
 # ******************************************
 
-version="0.1.1"
+version="0.1.2"
 basepath=$(cd `dirname $0`; pwd);
 
 # config ###########################################
@@ -57,88 +57,152 @@ hbPaths=(
 
 ####################################################
 
-if [ -n "$LOG_FILE_PATH" ]; then
-    if [ ! -x "$LOG_FILE_PATH" ]; then
-        mkdir "$LOG_FILE_PATH"
-        echo "[WARN] mkdir $LOG_FILE_PATH"
+getIndexs() {
+    if [ -z "$1" ]; then
+        for((index=0;index<=${#hbPaths[@]};index++)); do
+            echo $(($index-1))
+        done
+    else
+        str=$1;
+        arr=(${str//,/ });
+        for i in ${arr[@]}; do
+            echo $(($i-1))
+        done
     fi
-fi
-
-getRunningNum() {
-    runningNum=0;
-    for hbPath in ${hbPaths[@]}; do
-        pid=`ps -ef | grep homebridge | grep $hbPath | grep -v grep | awk '{print $2}'`
-        if [ -n "$pid" ]; then
-            runningNum=$(($runningNum+1))
-        fi
-    done
-    return $runningNum;
 }
 
-getConfigBridgeValue() {
-    bridgeStr=`awk BEGIN{RS=EOF}'{gsub(/\n/," ");print}' $1 | awk '{gsub(/ /,"")}1' | awk -F "\"bridge\":{" '{print $2}' | awk -F "}," '{print $1}'`;
-    if [ -n "$bridgeStr" ]; then
-        mNum=`echo $bridgeStr | awk -v RS=':' 'END {print --NR}'`;
-        yNum=`echo $bridgeStr | awk -v RS='\"' 'END {print --NR}'`;
-        if [ "$mNum" -eq "9" ] && [ "$yNum" -eq "14" ]; then
-            valueStr=`echo $bridgeStr | awk -F "\"$2\":\"" '{print $2}' | awk -F "\"" '{print $1}'`;
-            echo $valueStr;
-        else
-            echo $3;
+getHomebridgePID() {
+    pid=`ps -ef | grep homebridge | grep $1 | grep -v grep | head -1 | awk '{print $2}'`
+    echo $pid;
+}
+
+getBridgeConfig() {
+    if [ -f "$1" ]; then
+        bridgeStr=`awk BEGIN{RS=EOF}'{gsub(/\n/," ");print}' $1 | awk '{gsub(/ /,"")}1' | awk '{gsub(/\t/,"")}1' | awk -F "\"bridge\":{" '{print $2}' | awk -F "}," '{print $1}'`;
+        if [ -n "$bridgeStr" ]; then
+            mNum=`echo $bridgeStr | awk -v RS=':' 'END {print --NR}'`;
+            yNum=`echo $bridgeStr | awk -v RS='\"' 'END {print --NR}'`;
+            if [ "$mNum" -eq "9" ] && [ "$yNum" -eq "14" ]; then
+                echo $bridgeStr;
+                return;
+            fi
         fi
-    else
-        echo $3;
     fi
+    echo "";
+}
+
+getBridgeConfigStringValue() {
+    if [ -n "$1" ]; then
+        valueStr=`echo $1 | awk -F "\"$2\":\"" '{print $2}' | awk -F "\"" '{print $1}'`;
+        echo $valueStr;
+        return;
+    fi
+    echo $3;
+}
+
+getBridgeConfigIntegerValue() {
+    if [ -n "$1" ]; then
+        valueStr=`echo $1 | awk -F "\"$2\":" '{print $2}' | awk -F "," '{print $1}'`;
+        echo $valueStr;
+        return;
+    fi
+    echo $3;
+}
+
+config() {
+    indexs=$(getIndexs $1);
+    for index in $indexs; do
+        if [ $index -lt 0 ] || [ $index -gt ${#hbPaths[@]} ]; then
+            continue;
+        fi
+        
+        bridgeConfig=$(getBridgeConfig "${hbPaths[$index]}/config/config.json");
+        echo -n -e "[$(($index+1))]" | awk '{printf ("%05s",$NF)}';
+        echo -n -e " "
+        echo -n $(getBridgeConfigStringValue "$bridgeConfig" "name" "-") | awk '{printf ("%-40s",$NF)}';
+        echo -n -e " "
+        echo -n "["$(getBridgeConfigStringValue "$bridgeConfig" "pin" "----------")"]"
+        echo -n -e "    "
+        echo -n $(getBridgeConfigStringValue "$bridgeConfig" "username" "--:--:--:--:--:--")
+        echo -n -e "    "
+        echo -n $(getBridgeConfigIntegerValue "$bridgeConfig" "port" "-----") | awk '{printf ("%5s",$NF)}';
+        echo -n -e "    "
+        echo -n "${hbPaths[$index]}/config/config.json"
+        echo ""
+    done
 }
 
 status() {
-    for hbPath in ${hbPaths[@]}; do
-        pid=`ps -ef | grep homebridge | grep $hbPath | grep -v grep | awk '{print $2}'`
-        if [ -z "$pid" ]; then
-            echo -n "(Not Run)"
-        else
-            echo -n "(Running)"
-            echo -n " "
-            echo -n $pid
-            echo -n -e "\t"
-            echo -n "["$(getConfigBridgeValue "$hbPath/config/config.json" "pin" "----------")"]"
-            echo -n " "
-            echo -n $(getConfigBridgeValue "$hbPath/config/config.json" "name" "")
+    indexs=$(getIndexs $1);
+    for index in $indexs; do
+        if [ $index -lt 0 ] || [ $index -gt ${#hbPaths[@]} ]; then
+            continue;
         fi
-
-        echo -n -e "\t"
-        echo -n $hbPath
+        
+        echo -n -e "[$(($index+1))]" | awk '{printf ("%05s",$NF)}';
+        echo -n -e " "
+        pid=$(getHomebridgePID ${hbPaths[$index]});
+        if [ -z "$pid" ]; then
+            echo -n "[Not Run]"
+            echo -n -e " "
+            echo -n " " | awk '{printf ("%09s",$NF)}';
+            echo -n -e " "
+            echo -n " " | awk '{printf ("%15s",$NF)}';
+        else
+            echo -n -e "[Running]"
+            echo -n -e " "
+            echo -n $pid | awk '{printf ("%09s",$NF)}';
+            echo -n -e " "
+            ps -o etimes= -p $pid | awk '{printf("%d-%02d:%02d:%02d\n",($1/60/60/24),($1/60/60%24),($1/60%60),($1%60))}' | awk '{printf ("%15s",$NF)}';
+        fi
+        echo -n -e "   "
+        echo -n ${hbPaths[$index]}
         echo ""
     done
 }
 
 toggle() {
-    getRunningNum;
-    runningNum=$?
-    if [ $runningNum -ne 0 ]; then
-        stop;
-    else
-        start;
-    fi
+    indexs=$(getIndexs $1);
+    for index in $indexs; do
+        if [ $index -lt 0 ] || [ $index -gt ${#hbPaths[@]} ]; then
+            continue;
+        fi
+        
+        pid=$(getHomebridgePID ${hbPaths[$index]});
+        if [ -z "$pid" ]; then
+            start $(($index+1))
+        else
+            stop $(($index+1))
+        fi
+    done
 }
 
 start() {
-    getRunningNum;
-    runningNum=$?
-    if [ $runningNum -ne 0 ]; then
-        echo "[WARN] YHHB is runing.";
-    else
-        for hbPath in ${hbPaths[@]}; do
-            cmd="nohup ${basepath}/homebridge $STARTUP_PARAM -U $hbPath/config/ ";
+    if [ -n "$LOG_FILE_PATH" ]; then
+        if [ ! -x "$LOG_FILE_PATH" ]; then
+            mkdir "$LOG_FILE_PATH"
+            echo "[WARN] mkdir $LOG_FILE_PATH"
+        fi
+    fi
+        
+    indexs=$(getIndexs $1);
+    for index in $indexs; do
+        if [ $index -lt 0 ] || [ $index -gt ${#hbPaths[@]} ]; then
+            continue;
+        fi
+        
+        pid=$(getHomebridgePID ${hbPaths[$index]});
+        if [ -z "$pid" ]; then
+            cmd="nohup ${basepath}/homebridge $STARTUP_PARAM -U ${hbPaths[$index]}/config/ ";
             if [ -n "$PLUGIN_FILE_PATH" ]; then
                 cmd="$cmd""-P $PLUGIN_FILE_PATH";
             else
-                cmd="$cmd""-P $hbPath/plugin/";
+                cmd="$cmd""-P ${hbPaths[$index]}/plugin/";
             fi
             cmd="$cmd"" >> ";
             if [ -n "$LOG_FILE_PATH" ]; then
-                cmd="$cmd""$LOG_FILE_PATH/$(basename $hbPath).log";
-                echo "============ YHHB Start "`date '+%Y-%m-%d %H:%M:%S'`" =============" >> "$LOG_FILE_PATH/$(basename $hbPath).log"
+                cmd="$cmd""$LOG_FILE_PATH/$(basename ${hbPaths[$index]}).log";
+                echo "============ YHHB Start "`date '+%Y-%m-%d %H:%M:%S'`" =============" >> "$LOG_FILE_PATH/$(basename ${hbPaths[$index]}).log"
             else
                 cmd="$cmd""/dev/null";
             fi
@@ -146,51 +210,71 @@ start() {
             
             # echo "$cmd"
             eval "$cmd"
-        done
-    fi
+        else
+            echo "[WARN] YHHB(${hbPaths[$index]}) is runing.";
+        fi
+    done
 }
 
 stop() {
-    getRunningNum;
-    runningNum=$?
-    if [ $runningNum -ne 0 ]; then
-        for hbPath in ${hbPaths[@]}; do
-            pid=`ps -ef | grep homebridge | grep $hbPath | grep -v grep | awk '{print $2}'`
-            if [ -n "$pid" ]; then
-                `kill $pid`
-            fi
-        done
-    else
-        echo "[WARN] YHHB is not runing.";
-    fi
+    indexs=$(getIndexs $1);
+    for index in $indexs; do
+        if [ $index -lt 0 ] || [ $index -gt ${#hbPaths[@]} ]; then
+            continue;
+        fi
+        
+        pid=$(getHomebridgePID ${hbPaths[$index]});
+        if [ -z "$pid" ]; then
+            echo "[WARN] YHHB(${hbPaths[$index]}) is not runing.";
+        else
+            `kill $pid`
+        fi
+    done
 }
 
 help() {
-    getRunningNum;
-    runningNum=$?
-    echo $runningNum
+    echo "YHHB, version $version";
+    echo "Usage:  bash YHHB [option]";
+    echo "        bash YHHB [option] index1,index2...";
+    echo "options:";
+    echo "        start         start homebridge";
+    echo "        stop          stop homebridge";
+    echo "        restart       restart homebridge";
+    echo "        status        check homebridge status";
+    echo "        config        check homebridge config";
+    echo "        version       display YHHB version";
+    echo "more information reference";
+    echo "          https://github.com/YinHangCode/YHHB";
 }
 
 printVersion() {
-    echo "YHHB $version"
+    echo "*************************************";
+    echo "            YHHB v$version           ";
+    echo "                         By YinHang  ";
+    echo " https://github.com/YinHangCode/YHHB ";
+    echo "                 QQ Group: 107927710 ";
+    echo "*************************************";
 }
 
 case "$1" in
     'start')
-        start
+        start $2
         ;;
     'stop')
-        stop
+        stop $2
         ;;
     'restart')
-        stop
-        start
+        stop $2
+        start $2
+        ;;
+    'config')
+        config $2
         ;;
     'status')
-        status
+        status $2
         ;;
     'toggle')
-        toggle
+        toggle $2
         ;;
     'help')
         help
@@ -199,6 +283,7 @@ case "$1" in
         printVersion
         ;;
     *)
+        help
         exit 1
         ;;
 esac

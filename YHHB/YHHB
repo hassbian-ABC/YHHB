@@ -2,14 +2,14 @@
 # /etc/init.d/YHHB
 
 # ******************************************
-#               YHHB v0.1.2
+#               YHHB v0.1.3
 #                       By YinHang
 #      https://github.com/YinHangCode/YHHB
 #                      QQ Group: 107927710
 # ******************************************
 
-version="0.1.2"
-basepath=$(cd `dirname $0`; pwd);
+version="0.1.3"
+basepath=$(cd `dirname $(readlink -f "$0")`; pwd);
 
 # config ###########################################
 
